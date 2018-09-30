@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponseRedirect,Http404
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
@@ -17,7 +17,7 @@ def index(request):
 
 def show_note(request,note_id):
     """显示具体的博客内容"""
-    note = BlogPost.objects.get(id=note_id)
+    note = get_object_or_404(BlogPost,id=note_id)
     context = {'note':note}
     return render(request,'blogs/show_note.html',context)
 
@@ -40,7 +40,7 @@ def new_note(request):
 @login_required
 def edit_note(request,note_id):
     """编辑已有帖子"""
-    note = BlogPost.objects.get(id=note_id)
+    note = get_object_or_404(BlogPost,id=note_id)
 
     if note.owner == request.user:
         if request.method != 'POST':
